@@ -42,22 +42,40 @@ public class Ant extends Organism {
     public void move() {
         ArrayList<Coordinate> validPos = getMoves();
         if (!validPos.isEmpty()) {
-            Coordinate oldPos = new Coordinate(this.getPosition());
+            Coordinate oldPos = getPosition();
             Random rand = new Random();
             int index = rand.nextInt(validPos.size());
-            setPosition(validPos.get(index));
+            Coordinate newPos = validPos.get(index);
+            setPosition(newPos);
             antsArr.remove(oldPos);
-            antsArr.add(new Coordinate(this.getPosition()));
+            antsArr.add(newPos);
             BugsWorld.board[oldPos.getRow()][oldPos.getCol()] = null;
-            BugsWorld.board[this.getPosition().getRow()][this.getPosition().getCol()] = this;
+            BugsWorld.board[newPos.getRow()][newPos.getCol()] = this;
         }
         this.hasMoved = true;
-        timeStep++;
+        this.timeStep++;
+        if (this.timeStep == BREED_COEFF) {
+            breed();
+            this.timeStep = 0;
+        }
+    }
+
+    @Override
+    public void breed() {
+        ArrayList<Coordinate> validPos = getMoves();
+        if (!validPos.isEmpty()) {
+            Random rand = new Random();
+            int index = rand.nextInt(validPos.size());
+            Coordinate childPos = validPos.get(index);
+            Ant child = new Ant(childPos);
+            antsArr.add(childPos);
+            BugsWorld.board[childPos.getRow()][childPos.getCol()] = child;
+        }
     }
 
     @Override
     public String toString() {
-        return String.valueOf(this.id);
+        return "a" +  this.id + "t" + timeStep;
     }
 
     public static void main(String[] args) {

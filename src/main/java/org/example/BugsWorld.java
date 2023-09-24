@@ -4,9 +4,9 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class BugsWorld {
-    public static final int BOARD_SIZE = 2;
-    public static int ANTS_COUNT = 1;
-    public static int DOODLES_COUNT = 1;
+    public static final int BOARD_SIZE = 5;
+    public static int ANTS_COUNT = 5;
+    public static int DOODLES_COUNT = 0;
     public static final Organism[][] board = new Organism[BOARD_SIZE][BOARD_SIZE];
     private final StringBuilder mapRep;
 
@@ -60,7 +60,7 @@ public class BugsWorld {
             for (int col = 0; col < BOARD_SIZE; col++) {
                 Object obj = board[row][col];
                 if (obj == null) {
-                    mapRep.append("_");
+                    mapRep.append("____");
                 } else {
                     mapRep.append(board[row][col]);
                 }
@@ -80,12 +80,14 @@ public class BugsWorld {
             System.out.print("Continue(Y/N): ");
             String input = scanner.next();
             if (Objects.equals(input, "Y")) {
+                //Loop to move all Organisms
                 for (Organism[] o : board) {
                     for (Organism org : o) {
                         if (org != null && !org.hasMoved) org.move();
                     }
                 }
 
+                //End of timestep cleanup routine
                 for (Organism[] o : board) {
                     for (Organism org : o) {
                         if (org != null) org.hasMoved = false;

@@ -7,6 +7,7 @@ public abstract class Organism {
     int timeStep;
     public boolean hasMoved = false;
     abstract public void move();
+    abstract public void breed();
 
     public Organism(Coordinate pos) {
         this.position = pos;
@@ -48,9 +49,5 @@ public abstract class Organism {
         }
 
         return neighbors;
-    }
-
-    public void breed() {
-        //code for organism breeding
     }
 }

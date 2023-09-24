@@ -8,12 +8,12 @@ import java.util.Set;
 public class DoodleBug extends Organism {
     public static final int BREED_COEFF = 5;
     private int id;
-    private static int doodlesCount = 100;
+    private static int doodlesCount = 0;
     public static Set<Coordinate> doodlesArr = new HashSet<>();
 
     public DoodleBug(Coordinate pos) {
         super(pos);
-        this.id = --doodlesCount;
+        this.id = ++doodlesCount;
     }
 
     public DoodleBug(int row, int col) {
@@ -56,8 +56,13 @@ public class DoodleBug extends Organism {
     }
 
     @Override
+    public void breed() {
+
+    }
+
+    @Override
     public String toString() {
-        return String.valueOf(this.id);
+        return "d" + this.id + "t" + timeStep;
     }
 
     public static void main(String[] args) {
