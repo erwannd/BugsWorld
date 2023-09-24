@@ -4,22 +4,16 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class BugsWorld {
-    public static final int BOARD_SIZE = 5;
-    public static int ANTS_COUNT = 5;
-    public static int DOODLES_COUNT = 0;
-    private static final Organism[][] board = new Organism[BOARD_SIZE][BOARD_SIZE];
+    public static final int BOARD_SIZE = 2;
+    public static int ANTS_COUNT = 1;
+    public static int DOODLES_COUNT = 1;
+    public static final Organism[][] board = new Organism[BOARD_SIZE][BOARD_SIZE];
+    private final StringBuilder mapRep;
 
     public BugsWorld() {
         Ant.initAntsArr(ANTS_COUNT);
-        for (Coordinate a : Ant.antsArr) {
-            Ant ant = new Ant(a);
-            board[a.getRow()][a.getCol()] = ant;
-        }
         DoodleBug.initDoodlesArr(DOODLES_COUNT);
-        for (Coordinate d : DoodleBug.doodlesArr) {
-            DoodleBug doodle = new DoodleBug(d);
-            board[d.getRow()][d.getCol()] = doodle;
-        }
+        mapRep = new StringBuilder();
     }
 
     /**
@@ -40,8 +34,28 @@ public class BugsWorld {
 
     @Override
     public String toString() {
-        StringBuilder mapRep = new StringBuilder();
-        updateWorld();
+        //updateWorld();
+        drawWorld();
+        return mapRep.toString();
+    }
+
+    public void updateWorld() {
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                Coordinate c = new Coordinate(row, col);
+                if (Ant.antsArr.contains(c)) {
+                    board[row][col] = new Ant(c);
+                } else if (DoodleBug.doodlesArr.contains(c)) {
+                    board[row][col] = new DoodleBug(c);
+                } else {
+                    board[row][col] = null;
+                }
+            }
+        }
+    }
+
+    public void drawWorld() {
+        mapRep.setLength(0);
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
                 Object obj = board[row][col];
@@ -53,20 +67,6 @@ public class BugsWorld {
                 mapRep.append("\t");
             }
             mapRep.append("\n");
-        }
-        return mapRep.toString();
-    }
-
-    public void updateWorld() {
-        for (int row = 0; row < BOARD_SIZE; row++) {
-            for (int col = 0; col < BOARD_SIZE; col++) {
-                Coordinate c = new Coordinate(row, col);
-                if (Ant.antsArr.contains(c)) {
-                    board[row][col] = new Ant(c);
-                } else {
-                    board[row][col] = null;
-                }
-            }
         }
     }
 
@@ -83,6 +83,12 @@ public class BugsWorld {
                 for (Organism[] o : board) {
                     for (Organism org : o) {
                         if (org != null && !org.hasMoved) org.move();
+                    }
+                }
+
+                for (Organism[] o : board) {
+                    for (Organism org : o) {
+                        if (org != null) org.hasMoved = false;
                     }
                 }
             }

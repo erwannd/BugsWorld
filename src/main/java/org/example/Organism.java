@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Organism {
     private Coordinate position;
-    private int timeStep;
+    int timeStep;
     public boolean hasMoved = false;
     abstract public void move();
 
@@ -21,7 +21,7 @@ public abstract class Organism {
     }
 
     /** Observe neighboring slots that is unoccupied within the game board.
-     * @return ArrayList containing valid Coordinates.
+     * @return ArrayList containing valid Coordinates to move to.
      */
     public ArrayList<Coordinate> getMoves() {
         ArrayList<Coordinate> neighbors = new ArrayList<>();
@@ -52,9 +52,5 @@ public abstract class Organism {
 
     public void breed() {
         //code for organism breeding
-    }
-
-    public void incrementStep() {
-        timeStep++;
     }
 }

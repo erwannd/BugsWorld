@@ -7,14 +7,18 @@ import java.util.Set;
 
 public class Ant extends Organism {
     public static final int BREED_COEFF = 3;
+    private int id;
+    private static int antsCount = 0;
     public static Set<Coordinate> antsArr = new HashSet<>();
 
     public Ant(Coordinate pos) {
         super(pos);
+        this.id = ++antsCount;
     }
 
     public Ant(int row, int col) {
         super(new Coordinate(row, col));
+        this.id = ++antsCount;
     }
 
     public static void initAntsArr(int antsCount) {
@@ -29,24 +33,31 @@ public class Ant extends Organism {
                 point = new Coordinate(row, col);
             }
             antsArr.add(point);
+            Ant ant = new Ant(point);
+            BugsWorld.board[point.getRow()][point.getCol()] = ant;
         }
     }
 
     @Override
     public void move() {
         ArrayList<Coordinate> validPos = getMoves();
-        Coordinate oldPos = new Coordinate(this.getPosition());
-        Random rand = new Random();
-        int index = rand.nextInt(validPos.size());
-        setPosition(validPos.get(index));
-        antsArr.remove(oldPos);
-        antsArr.add(new Coordinate(this.getPosition()));
+        if (!validPos.isEmpty()) {
+            Coordinate oldPos = new Coordinate(this.getPosition());
+            Random rand = new Random();
+            int index = rand.nextInt(validPos.size());
+            setPosition(validPos.get(index));
+            antsArr.remove(oldPos);
+            antsArr.add(new Coordinate(this.getPosition()));
+            BugsWorld.board[oldPos.getRow()][oldPos.getCol()] = null;
+            BugsWorld.board[this.getPosition().getRow()][this.getPosition().getCol()] = this;
+        }
         this.hasMoved = true;
+        timeStep++;
     }
 
     @Override
     public String toString() {
-        return "O";
+        return String.valueOf(this.id);
     }
 
     public static void main(String[] args) {
