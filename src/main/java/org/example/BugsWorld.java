@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class BugsWorld {
     public static final int BOARD_SIZE = 5;
-    public static int ANTS_COUNT = 5;
-    public static int DOODLES_COUNT = 0;
+    public static int ANTS_COUNT = 3;
+    public static int DOODLES_COUNT = 5;
     public static final Organism[][] board = new Organism[BOARD_SIZE][BOARD_SIZE];
     private final StringBuilder mapRep;
 
@@ -80,10 +80,17 @@ public class BugsWorld {
             System.out.print("Continue(Y/N): ");
             String input = scanner.next();
             if (Objects.equals(input, "Y")) {
-                //Loop to move all Organisms
+                //Call move() on all Organisms
                 for (Organism[] o : board) {
                     for (Organism org : o) {
                         if (org != null && !org.hasMoved) org.move();
+                    }
+                }
+
+                //Call breed() on all Organisms
+                for (Organism[] o : board) {
+                    for (Organism org : o) {
+                        if (org != null) org.breed();
                     }
                 }
 

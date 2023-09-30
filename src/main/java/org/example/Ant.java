@@ -54,14 +54,15 @@ public class Ant extends Organism {
         }
         this.hasMoved = true;
         this.timeStep++;
-        if (this.timeStep == BREED_COEFF) {
-            breed();
-            this.timeStep = 0;
-        }
     }
 
     @Override
     public void breed() {
+        if (this.timeStep == BREED_COEFF) {
+            this.timeStep = 0;
+        } else {
+            return;
+        }
         ArrayList<Coordinate> validPos = getMoves();
         if (!validPos.isEmpty()) {
             Random rand = new Random();
